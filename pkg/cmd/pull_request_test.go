@@ -5,11 +5,11 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/github/client"
-	"github.com/int128/ghcp/pkg/logger"
-	"github.com/int128/ghcp/pkg/usecases/pullrequest"
-	"github.com/int128/ghcp/pkg/usecases/pullrequest/mock_pullrequest"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest/mock_pullrequest"
 )
 
 func TestCmd_Run_pull_request(t *testing.T) {

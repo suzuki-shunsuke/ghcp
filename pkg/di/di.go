@@ -5,17 +5,17 @@ package di
 
 import (
 	"github.com/google/wire"
-	"github.com/int128/ghcp/pkg/cmd"
-	"github.com/int128/ghcp/pkg/env"
-	"github.com/int128/ghcp/pkg/fs"
-	"github.com/int128/ghcp/pkg/github"
-	"github.com/int128/ghcp/pkg/github/client"
-	"github.com/int128/ghcp/pkg/logger"
-	"github.com/int128/ghcp/pkg/usecases/commit"
-	"github.com/int128/ghcp/pkg/usecases/forkcommit"
-	"github.com/int128/ghcp/pkg/usecases/gitobject"
-	"github.com/int128/ghcp/pkg/usecases/pullrequest"
-	"github.com/int128/ghcp/pkg/usecases/release"
+	"github.com/suzuki-shunsuke/ghcp/pkg/cmd"
+	"github.com/suzuki-shunsuke/ghcp/pkg/env"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/forkcommit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/gitobject"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/release"
 )
 
 func NewCmd() cmd.Interface {

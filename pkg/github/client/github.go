@@ -19,7 +19,7 @@ var Set = wire.NewSet(
 
 type NewFunc func(Option) (Interface, error)
 
-//go:generate mockgen -destination mock_client/mock_client.go github.com/int128/ghcp/pkg/github/client Interface
+//go:generate mockgen -destination mock_client/mock_client.go github.com/suzuki-shunsuke/ghcp/pkg/github/client Interface
 
 type Interface interface {
 	QueryService

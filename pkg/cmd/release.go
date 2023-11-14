@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/usecases/release"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/release"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )

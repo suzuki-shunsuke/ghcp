@@ -6,9 +6,9 @@ import (
 	"fmt"
 
 	"github.com/google/wire"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/github"
-	"github.com/int128/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
 )
 
 var Set = wire.NewSet(
@@ -16,7 +16,7 @@ var Set = wire.NewSet(
 	wire.Struct(new(PullRequest), "*"),
 )
 
-//go:generate mockgen -destination mock_pullrequest/mock_pullrequest.go github.com/int128/ghcp/pkg/usecases/pullrequest Interface
+//go:generate mockgen -destination mock_pullrequest/mock_pullrequest.go github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest Interface
 
 type Interface interface {
 	Do(ctx context.Context, in Input) error

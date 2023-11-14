@@ -5,15 +5,15 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/int128/ghcp/pkg/fs"
-	"github.com/int128/ghcp/pkg/fs/mock_fs"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/github"
-	"github.com/int128/ghcp/pkg/github/mock_github"
-	testingLogger "github.com/int128/ghcp/pkg/logger/testing"
-	"github.com/int128/ghcp/pkg/usecases/gitobject"
-	"github.com/int128/ghcp/pkg/usecases/gitobject/mock_gitobject"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs/mock_fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/mock_github"
+	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/gitobject"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/gitobject/mock_gitobject"
 )
 
 var parentRepositoryID = git.RepositoryID{Owner: "upstream", Name: "repo"}

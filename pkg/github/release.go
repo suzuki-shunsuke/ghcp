@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/google/go-github/v49/github"
-	"github.com/int128/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 // GetReleaseByTagOrNil returns the release associated to the tag.

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/int128/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/spf13/pflag"
 )
 

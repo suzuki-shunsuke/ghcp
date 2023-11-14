@@ -7,10 +7,10 @@ import (
 
 	"github.com/google/wire"
 
-	"github.com/int128/ghcp/pkg/fs"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/github"
-	"github.com/int128/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
 )
 
 var Set = wire.NewSet(
@@ -18,7 +18,7 @@ var Set = wire.NewSet(
 	wire.Bind(new(Interface), new(*CreateGitObject)),
 )
 
-//go:generate mockgen -destination mock_gitobject/mock_gitobject.go github.com/int128/ghcp/pkg/usecases/gitobject Interface
+//go:generate mockgen -destination mock_gitobject/mock_gitobject.go github.com/suzuki-shunsuke/ghcp/pkg/usecases/gitobject Interface
 
 type Interface interface {
 	Do(ctx context.Context, in Input) (*Output, error)
