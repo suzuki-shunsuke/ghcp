@@ -1,4 +1,6 @@
-# ghcp [![go](https://github.com/int128/ghcp/actions/workflows/go.yaml/badge.svg)](https://github.com/int128/ghcp/actions/workflows/go.yaml) [![GoDoc](https://godoc.org/github.com/int128/ghcp?status.svg)](https://godoc.org/github.com/int128/ghcp)
+# ghcp
+
+Fork of [int128/ghcp](https://github.com/int128/ghcp).
 
 This is a release engineering tool for GitHub.
 It depends on GitHub APIs and works without git installation.
@@ -10,7 +12,6 @@ It provides the following features:
 - Fork a repository and commit files to the forked repository
 - Create a pull request
 - Upload files to GitHub Releases
-
 
 ## Getting Started
 
@@ -26,7 +27,6 @@ brew install int128/ghcp/ghcp
 ```
 
 You need to get a personal access token from the [settings](https://github.com/settings/tokens) and set it to `GITHUB_TOKEN` environment variable or `--token` option.
-
 
 ### Commit files to a branch
 
@@ -79,7 +79,6 @@ Flags:
   -r, --repo string              Repository name, either -r OWNER/REPO or -u OWNER -r REPO (mandatory)
 ```
 
-
 ### Create an empty commit to a branch
 
 To create an empty commit to the default branch:
@@ -122,7 +121,6 @@ Flags:
   -r, --repo string              Repository name, either -r OWNER/REPO or -u OWNER -r REPO (mandatory)
 ```
 
-
 ### Fork the repository and commit files to a new branch
 
 To fork repository `UPSTREAM/REPO` and create `feature` branch from the default branch:
@@ -157,7 +155,6 @@ Flags:
       --parent string            Upstream branch name (default: the default branch of the upstream repository)
   -r, --repo string              Upstream repository name, either -r OWNER/REPO or -u OWNER -r REPO (mandatory)
 ```
-
 
 ### Create a pull request
 
@@ -204,7 +201,6 @@ Flags:
       --title string        Title of a pull request (mandatory)
 ```
 
-
 ### Release assets
 
 To upload files to the release associated to tag `v1.0.0`:
@@ -237,7 +233,6 @@ Flags:
       --target string   Branch name or commit SHA of a tag. Unused if the Git tag already exists (default: the default branch)
 ```
 
-
 ## Usage
 
 ### Global options
@@ -262,10 +257,13 @@ export GITHUB_API=https://github.example.com/api/v3/
 
 GitHub API v4 URL will be automatically inferred from the v3 URL by resolving the relative path `../graphql`.
 
-
 ## Contributions
 
-This is an open source software.
-Feel free to open issues and pull requests.
+Please see [the guide](https://github.com/suzuki-shunsuke/oss-contribution-guide).
 
-Author: [Hidetake Iwata](https://github.com/int128)
+## LICENSE
+
+[Apache License 2.0](LICENSE)
+
+This is a fork of [int128/ghcp](https://github.com/int128/ghcp) ([base commit](https://github.com/int128/ghcp/commit/6de98923653dac599f0cc0e53dc805a9c963669e)).
+The original author is [Hidetake Iwata](https://github.com/int128) and the original license is also [Apache License 2.0](https://github.com/int128/ghcp/blob/6de98923653dac599f0cc0e53dc805a9c963669e/LICENSE).
