@@ -1,5 +1,7 @@
 module github.com/suzuki-shunsuke/ghcp
 
+go 1.21
+
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/golang/mock v1.6.0
@@ -12,5 +14,3 @@ require (
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/oauth2 v0.14.0
 )
-
-go 1.13
