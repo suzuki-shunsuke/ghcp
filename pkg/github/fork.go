@@ -6,7 +6,7 @@ import (
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/google/go-github/v49/github"
-	"github.com/int128/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/shurcooL/githubv4"
 )
 

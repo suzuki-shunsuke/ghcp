@@ -7,14 +7,14 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/int128/ghcp/pkg/env/mock_env"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/github/client"
-	"github.com/int128/ghcp/pkg/logger"
-	testingLogger "github.com/int128/ghcp/pkg/logger/testing"
-	"github.com/int128/ghcp/pkg/usecases/commit"
-	"github.com/int128/ghcp/pkg/usecases/commit/mock_commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/env/mock_env"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
+	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit/mock_commit"
 )
 
 const cmdName = "ghcp"

@@ -8,9 +8,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/usecases/forkcommit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/forkcommit"
 )
 
 func (r *Runner) newForkCommitCmd(ctx context.Context, gOpts *globalOptions) *cobra.Command {

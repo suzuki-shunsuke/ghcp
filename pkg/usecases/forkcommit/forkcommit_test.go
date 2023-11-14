@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/github/mock_github"
-	testingLogger "github.com/int128/ghcp/pkg/logger/testing"
-	"github.com/int128/ghcp/pkg/usecases/commit"
-	"github.com/int128/ghcp/pkg/usecases/commit/mock_commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/mock_github"
+	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit/mock_commit"
 )
 
 func TestForkCommit_Do(t *testing.T) {

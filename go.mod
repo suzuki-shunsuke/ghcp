@@ -1,4 +1,4 @@
-module github.com/int128/ghcp
+module github.com/suzuki-shunsuke/ghcp
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.0

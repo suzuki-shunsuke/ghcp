@@ -7,12 +7,12 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/int128/ghcp/pkg/fs"
-	"github.com/int128/ghcp/pkg/fs/mock_fs"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/github"
-	"github.com/int128/ghcp/pkg/github/mock_github"
-	testingLogger "github.com/int128/ghcp/pkg/logger/testing"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/fs/mock_fs"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/mock_github"
+	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
 )
 
 func TestCreateBlobTreeCommit_Do(t *testing.T) {

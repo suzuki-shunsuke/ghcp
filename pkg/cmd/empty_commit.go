@@ -7,9 +7,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/usecases/commit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit"
 )
 
 const emptyCommitCmdExample = `  To create an empty commit to the default branch:

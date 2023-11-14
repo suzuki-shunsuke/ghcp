@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/git/commitstrategy"
-	"github.com/int128/ghcp/pkg/github/client"
-	"github.com/int128/ghcp/pkg/logger"
-	"github.com/int128/ghcp/pkg/usecases/forkcommit"
-	"github.com/int128/ghcp/pkg/usecases/forkcommit/mock_forkcommit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git/commitstrategy"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/forkcommit"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/forkcommit/mock_forkcommit"
 )
 
 func TestCmd_Run_forkcommit(t *testing.T) {

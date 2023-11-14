@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/pflag"
 
-	"github.com/int128/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 type commitAttributeOptions struct {

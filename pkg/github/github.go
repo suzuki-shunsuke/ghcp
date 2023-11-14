@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/google/wire"
-	"github.com/int128/ghcp/pkg/git"
-	"github.com/int128/ghcp/pkg/github/client"
-	"github.com/int128/ghcp/pkg/logger"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
+	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
 	"github.com/shurcooL/githubv4"
 )
 
@@ -15,7 +15,7 @@ var Set = wire.NewSet(
 	wire.Bind(new(Interface), new(*GitHub)),
 )
 
-//go:generate mockgen -destination mock_github/mock_github.go github.com/int128/ghcp/pkg/github Interface
+//go:generate mockgen -destination mock_github/mock_github.go github.com/suzuki-shunsuke/ghcp/pkg/github Interface
 
 type Interface interface {
 	CreateFork(ctx context.Context, id git.RepositoryID) (*git.RepositoryID, error)

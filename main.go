@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/int128/ghcp/pkg/di"
+	"github.com/suzuki-shunsuke/ghcp/pkg/di"
 )
 
 var version = "HEAD"

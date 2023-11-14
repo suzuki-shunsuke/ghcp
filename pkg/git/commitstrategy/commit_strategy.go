@@ -3,7 +3,7 @@ package commitstrategy
 import (
 	"fmt"
 
-	"github.com/int128/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 // CommitStrategy represents a method to create a commit object.
