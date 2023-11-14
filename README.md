@@ -13,20 +13,48 @@ It provides the following features:
 - Create a pull request
 - Upload files to GitHub Releases
 
-## Getting Started
+## Install
 
-You can install the latest release from [GitHub Releases](https://github.com/int128/ghcp/releases) or Homebrew.
+There are several ways to install ghcp.
+
+1. [Homebrew](https://brew.sh/)
 
 ```sh
-# GitHub Releases
-curl -fL -o /tmp/ghcp.zip https://github.com/int128/ghcp/releases/download/v1.8.0/ghcp_linux_amd64.zip
-unzip /tmp/ghcp.zip -d ~/bin
-
-# Homebrew
-brew install int128/ghcp/ghcp
+brew install suzuki-shunsuke/ghcp/ghcp
 ```
 
-You need to get a personal access token from the [settings](https://github.com/settings/tokens) and set it to `GITHUB_TOKEN` environment variable or `--token` option.
+2. [Scoop](https://scoop.sh/)
+
+```sh
+scoop bucket add suzuki-shunsuke https://github.com/suzuki-shunsuke/scoop-bucket
+scoop install ghcp
+```
+
+3. [aqua](https://aquaproj.github.io/)
+
+```sh
+aqua g -i suzuki-shunsuke/ghcp
+```
+
+4. Download a prebuilt binary from [GitHub Releases](https://github.com/suzuki-shunsuke/ghcp/releases) and unarchive it and install the executable file into `$PATH`
+
+## GitHub Access Token
+
+You need to set a GitHub Access token to the environment variable `GITHUB_TOKEN`.
+
+```sh
+export GITHUB_TOKEN=xxx
+```
+
+Or you can also pass the access token with `--token` option.
+
+e.g.
+
+```sh
+ghcp --token xxx commit -r OWNER/REPO -m MESSAGE file1 file2
+```
+
+## Getting Started
 
 ### Commit files to a branch
 
