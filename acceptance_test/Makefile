@@ -1,5 +1,5 @@
 GHCP := ../ghcp
-GHCP_FLAGS := --debug -u int128 -r ghcp
+GHCP_FLAGS := --debug -u suzuki-shunsuke -r ghcp
 
 GITHUB_RUN_NUMBER ?= 0
 BRANCH_PREFIX := ghcp-acceptance-test-$(GITHUB_RUN_NUMBER)
