@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v57/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
