@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/google/go-github/v49/github"
-	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/google/go-github/v58/github"
 	"github.com/shurcooL/githubv4"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 // CreateFork creates a fork of the repository.
