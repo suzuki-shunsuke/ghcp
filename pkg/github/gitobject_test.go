@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client/mock_client"
 	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
