@@ -4,11 +4,17 @@ on:
     tags: [v*]
 jobs:
   release:
-    uses: suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml@d6f6cfa71c22d118c758a42ec2d1fb18cba0536e # v0.4.4
+    uses: suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml@df72518e53868ca4996ae8d026c952309bbee13c # v1.0.0
     with:
       homebrew: true
       go-version: 1.19.5
-      aqua_version: v2.17.1
+      aqua_version: v2.25.1
+      app_token_repositories: >-
+        [
+          "${{github.event.repository.name}}",
+          "homebrew-${{github.event.repository.name}}",
+          "scoop-bucket"
+        ]
     secrets:
       gh_app_id: ${{secrets.APP_ID}}
       gh_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
