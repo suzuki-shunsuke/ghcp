@@ -17,8 +17,10 @@ import (
 	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/commit/mock_commit"
 )
 
-const cmdName = "ghcp"
-const version = "TEST"
+const (
+	cmdName = "ghcp"
+	version = "TEST"
+)
 
 func TestCmd_Run(t *testing.T) {
 	ctx := context.TODO()
@@ -54,7 +56,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -86,7 +88,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -113,7 +115,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -137,7 +139,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeError {
 			t.Errorf("exitCode wants %d but %d", exitCodeError, exitCode)
 		}
@@ -166,7 +168,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -194,7 +196,7 @@ func TestCmd_Run(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}

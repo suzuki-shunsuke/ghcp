@@ -40,7 +40,7 @@ func TestCmd_Run_empty_commit(t *testing.T) {
 			"-r", "owner/repo",
 			"-m", "commit-message",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}

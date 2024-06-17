@@ -43,7 +43,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -79,7 +79,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -116,7 +116,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -153,7 +153,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -181,7 +181,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeError {
 			t.Errorf("exitCode wants %d but %d", exitCodeError, exitCode)
 		}
@@ -206,7 +206,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"--author-name", "Some Author",
 			"file1",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeError {
 			t.Errorf("exitCode wants %d but %d", exitCodeError, exitCode)
 		}
@@ -231,7 +231,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"--committer-email", "committer@example.com",
 			"file1",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeError {
 			t.Errorf("exitCode wants %d but %d", exitCodeError, exitCode)
 		}
@@ -267,7 +267,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -303,7 +303,7 @@ func TestCmd_Run_commit(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
