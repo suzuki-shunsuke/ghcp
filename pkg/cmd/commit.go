@@ -3,6 +3,8 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -51,6 +53,15 @@ func (r *Runner) newCommitCmd(ctx context.Context, gOpts *globalOptions) *cobra.
 			if err != nil {
 				return fmt.Errorf("error while bootstrap of the dependencies: %w", err)
 			}
+
+			if o.DeletedFile != "" {
+				b, err := os.ReadFile(o.DeletedFile)
+				if err != nil {
+					return fmt.Errorf("read a file %s: %w", o.DeletedFile, err)
+				}
+				o.DeletedPaths = append(o.DeletedPaths, strings.Split(string(b), "\n")...)
+			}
+
 			in := commit.Input{
 				TargetRepository: targetRepository,
 				TargetBranchName: git.BranchName(o.BranchName),
@@ -85,6 +96,7 @@ type commitOptions struct {
 	NoFileMode   bool
 	DryRun       bool
 	DeletedPaths []string
+	DeletedFile  string
 }
 
 func (o commitOptions) validate() error {
@@ -114,6 +126,7 @@ func (o *commitOptions) register(f *pflag.FlagSet) {
 	f.BoolVar(&o.NoParent, "no-parent", false, "Create a commit without a parent")
 	f.BoolVar(&o.NoFileMode, "no-file-mode", false, "Ignore executable bit of file and treat as 0644")
 	f.BoolVar(&o.DryRun, "dry-run", false, "Upload files but do not update the branch actually")
-	f.StringSliceVarP(&o.DeletedPaths, "delete", "d", nil, "the list of deleted file paths")
+	f.StringSliceVarP(&o.DeletedPaths, "delete", "d", nil, "A list of deleted file paths")
+	f.StringVar(&o.DeletedFile, "delete-file", "", "A file including deleted file paths")
 	o.commitAttributeOptions.register(f)
 }
