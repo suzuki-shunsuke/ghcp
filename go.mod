@@ -13,4 +13,4 @@ require (
 	golang.org/x/oauth2 v0.21.0
 )
 
-go 1.13
+go 1.22.4
