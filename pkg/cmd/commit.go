@@ -59,7 +59,11 @@ func (r *Runner) newCommitCmd(ctx context.Context, gOpts *globalOptions) *cobra.
 				if err != nil {
 					return fmt.Errorf("read a file %s: %w", o.DeletedFile, err)
 				}
-				o.DeletedPaths = append(o.DeletedPaths, strings.Split(string(b), "\n")...)
+				for _, s := range strings.Split(string(b), "\n") {
+					if s != "" {
+						o.DeletedPaths = append(o.DeletedPaths, s)
+					}
+				}
 			}
 
 			in := commit.Input{
