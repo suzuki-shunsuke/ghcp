@@ -42,7 +42,7 @@ func TestCmd_Run_release(t *testing.T) {
 			"file1",
 			"file2",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}

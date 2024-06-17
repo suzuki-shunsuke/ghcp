@@ -6,6 +6,8 @@ import (
 	"fmt"
 
 	"github.com/google/wire"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 	"github.com/suzuki-shunsuke/ghcp/pkg/env"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
 	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
@@ -13,8 +15,6 @@ import (
 	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/forkcommit"
 	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest"
 	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/release"
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 const (
@@ -38,7 +38,7 @@ var Set = wire.NewSet(
 )
 
 type Interface interface {
-	Run(args []string, version string) int
+	Run(ctx context.Context, args []string, version string) int
 }
 
 // Runner is the entry point for the command line application.
@@ -51,9 +51,7 @@ type Runner struct {
 }
 
 // Run parses the command line args and runs the corresponding use-case.
-func (r *Runner) Run(args []string, version string) int {
-	ctx := context.Background()
-
+func (r *Runner) Run(ctx context.Context, args []string, version string) int {
 	var o globalOptions
 	rootCmd := r.newRootCmd(&o)
 	commitCmd := r.newCommitCmd(ctx, &o)

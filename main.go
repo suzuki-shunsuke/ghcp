@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"os"
+	"os/signal"
 
 	"github.com/suzuki-shunsuke/ghcp/pkg/di"
 )
@@ -9,5 +11,7 @@ import (
 var version = "HEAD"
 
 func main() {
-	os.Exit(di.NewCmd().Run(os.Args, version))
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	os.Exit(di.NewCmd().Run(ctx, os.Args, version))
 }

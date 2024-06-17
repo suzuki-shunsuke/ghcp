@@ -40,7 +40,7 @@ func TestCmd_Run_pull_request(t *testing.T) {
 			"-b", "feature",
 			"--title", "commit-message",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -72,7 +72,7 @@ func TestCmd_Run_pull_request(t *testing.T) {
 			"-b", "feature",
 			"--title", "commit-message",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
@@ -114,7 +114,7 @@ func TestCmd_Run_pull_request(t *testing.T) {
 			"--draft",
 			"--reviewer", "the-reviewer",
 		}
-		exitCode := r.Run(args, version)
+		exitCode := r.Run(ctx, args, version)
 		if exitCode != exitCodeOK {
 			t.Errorf("exitCode wants %d but %d", exitCodeOK, exitCode)
 		}
