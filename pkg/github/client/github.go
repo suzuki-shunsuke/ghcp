@@ -81,7 +81,7 @@ func newClients(o Option) (*githubv4.Client, *github.Client, error) {
 	}
 	if o.URLv3 != "" {
 		// https://developer.github.com/enterprise/2.16/v3/
-		v3, err := github.NewEnterpriseClient(o.URLv3, o.URLv3, hc)
+		v3, err := github.NewClient(hc).WithEnterpriseURLs(o.URLv3, o.URLv3)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error while creating a GitHub v3 client: %w", err)
 		}
