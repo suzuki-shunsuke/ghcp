@@ -41,7 +41,8 @@ type Input struct {
 	NoFileMode       bool
 	DryRun           bool
 
-	ForceUpdate bool //TODO: support force-update as well
+	ForceUpdate bool // TODO: support force-update as well
+	Delete      bool
 }
 
 // Commit commits files to the default/given branch on the repository.
@@ -60,12 +61,26 @@ func (u *Commit) Do(ctx context.Context, in Input) error {
 		return errors.New("you must set commit message")
 	}
 
+	u.FileSystem.SetDelete(in.Delete)
+
 	files, err := u.FileSystem.FindFiles(in.Paths, &pathFilter{Logger: u.Logger})
 	if err != nil {
 		return fmt.Errorf("could not find files: %w", err)
 	}
 	if len(in.Paths) > 0 && len(files) == 0 {
 		return errors.New("no file exists in given paths")
+	}
+
+	if in.Delete {
+		arr := make([]fs.File, 0, len(files))
+		for _, file := range files {
+			if file.Deleted {
+				in.DeletedPaths = append(in.DeletedPaths, file.Path)
+				continue
+			}
+			arr = append(arr, file)
+		}
+		files = arr
 	}
 
 	if in.TargetBranchName == "" {
@@ -143,7 +158,7 @@ func (u *Commit) createNewBranch(ctx context.Context, in Input, files []fs.File,
 		return fmt.Errorf("unknown commit strategy %+v", in.CommitStrategy)
 	}
 
-	u.Logger.Debugf("Creating a commit with the %d file(s)", len(gitObj.Files))
+	u.Logger.Debugf("Creating a commit with the %d file(s)", len(gitObj.Files)+len(gitObj.DeletedFiles))
 	commit, err := u.CreateGitObject.Do(ctx, gitObj)
 	if err != nil {
 		return fmt.Errorf("error while creating a commit: %w", err)

@@ -78,6 +78,7 @@ func (r *Runner) newCommitCmd(ctx context.Context, gOpts *globalOptions) *cobra.
 				DeletedPaths:     o.DeletedPaths,
 				NoFileMode:       o.NoFileMode,
 				DryRun:           o.DryRun,
+				Delete:           o.Delete,
 			}
 			if err := ir.CommitUseCase.Do(ctx, in); err != nil {
 				ir.Logger.Debugf("Stacktrace:\n%+v", err)
@@ -101,6 +102,7 @@ type commitOptions struct {
 	DryRun       bool
 	DeletedPaths []string
 	DeletedFile  string
+	Delete       bool
 }
 
 func (o commitOptions) validate() error {
@@ -130,6 +132,7 @@ func (o *commitOptions) register(f *pflag.FlagSet) {
 	f.BoolVar(&o.NoParent, "no-parent", false, "Create a commit without a parent")
 	f.BoolVar(&o.NoFileMode, "no-file-mode", false, "Ignore executable bit of file and treat as 0644")
 	f.BoolVar(&o.DryRun, "dry-run", false, "Upload files but do not update the branch actually")
+	f.BoolVarP(&o.Delete, "delete-not-found", "D", false, "Delete non existent files")
 	f.StringSliceVarP(&o.DeletedPaths, "delete", "d", nil, "A list of deleted file paths")
 	f.StringVar(&o.DeletedFile, "delete-file", "", "A file including deleted file paths")
 	o.commitAttributeOptions.register(f)
