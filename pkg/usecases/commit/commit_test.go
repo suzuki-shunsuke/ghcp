@@ -16,21 +16,28 @@ import (
 	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/gitobject/mock_gitobject"
 )
 
-var parentRepositoryID = git.RepositoryID{Owner: "upstream", Name: "repo"}
-var targetRepositoryID = git.RepositoryID{Owner: "owner", Name: "repo"}
+var (
+	parentRepositoryID = git.RepositoryID{Owner: "upstream", Name: "repo"}
+	targetRepositoryID = git.RepositoryID{Owner: "owner", Name: "repo"}
+)
 
-var targetRepositoryNodeID = github.InternalRepositoryNodeID("OwnerRepo")
-var targetBranchNodeID = github.InternalBranchNodeID("OwnerRepoTargetBranch")
+var (
+	targetRepositoryNodeID = github.InternalRepositoryNodeID("OwnerRepo")
+	targetBranchNodeID     = github.InternalBranchNodeID("OwnerRepoTargetBranch")
+)
 
-var thePathFilter = gomock.AssignableToTypeOf(&pathFilter{})
-var theFiles = []fs.File{
-	{Path: "file1"},
-	{Path: "file2", Executable: true},
-}
+var (
+	thePathFilter = gomock.AssignableToTypeOf(&pathFilter{})
+	theFiles      = []fs.File{
+		{Path: "file1"},
+		{Path: "file2", Executable: true},
+	}
+)
 
 func newFileSystemMock(ctrl *gomock.Controller) *mock_fs.MockInterface {
 	fileSystem := mock_fs.NewMockInterface(ctrl)
 	fileSystem.EXPECT().FindFiles([]string{"path"}, thePathFilter).Return(theFiles, nil)
+	fileSystem.EXPECT().SetDelete(false)
 	return fileSystem
 }
 
