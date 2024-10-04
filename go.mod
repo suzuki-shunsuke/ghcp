@@ -1,5 +1,7 @@
 module github.com/suzuki-shunsuke/ghcp
 
+go 1.23.2
+
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/golang/mock v1.6.0
@@ -18,5 +20,3 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20181231061246-d48a9a75455f // indirect
 	golang.org/x/net v0.23.0 // indirect
 )
-
-go 1.22.4
