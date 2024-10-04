@@ -2,6 +2,7 @@ package fs
 
 import (
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -21,6 +22,7 @@ var Set = wire.NewSet(
 type Interface interface {
 	FindFiles(paths []string, filter FindFilesFilter) ([]File, error)
 	ReadAsBase64EncodedContent(filename string) (string, error)
+	SetDelete(delete bool)
 }
 
 // FindFilesFilter is an interface to filter directories and files.
@@ -37,10 +39,17 @@ func (*nullFindFilesFilter) ExcludeFile(string) bool { return false }
 type File struct {
 	Path       string
 	Executable bool
+	Deleted    bool
 }
 
 // FileSystem provides manipulation of file system.
-type FileSystem struct{}
+type FileSystem struct {
+	Delete bool
+}
+
+func (fs *FileSystem) SetDelete(delete bool) {
+	fs.Delete = delete
+}
 
 // FindFiles returns a list of files in the paths.
 // If the filter is nil, it returns any files.
@@ -50,6 +59,18 @@ func (fs *FileSystem) FindFiles(paths []string, filter FindFilesFilter) ([]File,
 	}
 	var files []File
 	for _, path := range paths {
+		if fs.Delete {
+			if _, err := os.Stat(path); err != nil {
+				if !errors.Is(err, os.ErrNotExist) {
+					return nil, fmt.Errorf("error while checking if the file exists: %w", err)
+				}
+				files = append(files, File{
+					Path:    path,
+					Deleted: true,
+				})
+				continue
+			}
+		}
 		if err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return fmt.Errorf("error while walk: %w", err)
@@ -66,7 +87,7 @@ func (fs *FileSystem) FindFiles(paths []string, filter FindFilesFilter) ([]File,
 				}
 				files = append(files, File{
 					Path:       path,
-					Executable: info.Mode()&0100 != 0, // mask the executable bit of owner
+					Executable: info.Mode()&0o100 != 0, // mask the executable bit of owner
 				})
 				return nil
 			}

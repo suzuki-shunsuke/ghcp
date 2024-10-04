@@ -63,3 +63,15 @@ func (mr *MockInterfaceMockRecorder) ReadAsBase64EncodedContent(arg0 interface{}
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAsBase64EncodedContent", reflect.TypeOf((*MockInterface)(nil).ReadAsBase64EncodedContent), arg0)
 }
+
+// SetDelete mocks base method.
+func (m *MockInterface) SetDelete(arg0 bool) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "SetDelete", arg0)
+}
+
+// SetDelete indicates an expected call of SetDelete.
+func (mr *MockInterfaceMockRecorder) SetDelete(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetDelete", reflect.TypeOf((*MockInterface)(nil).SetDelete), arg0)
+}
