@@ -38,6 +38,100 @@ aqua g -i suzuki-shunsuke/ghcp
 
 4. Download a prebuilt binary from [GitHub Releases](https://github.com/suzuki-shunsuke/ghcp/releases) and unarchive it and install the executable file into `$PATH`
 
+<details>
+<summary>Verify downloaded binaries from GitHub Releases</summary>
+
+You can verify downloaded binaries using some tools.
+
+1. [Cosign](https://github.com/sigstore/cosign)
+1. [slsa-verifier](https://github.com/slsa-framework/slsa-verifier)
+1. [GitHub CLI](https://cli.github.com/)
+
+### 1. Cosign
+
+You can install Cosign by aqua.
+
+```sh
+aqua g -i sigstore/cosign
+```
+
+```sh
+gh release download -R suzuki-shunsuke/ghcp v1.16.0
+cosign verify-blob \
+  --signature ghcp_1.16.0_checksums.txt.sig \
+  --certificate ghcp_1.16.0_checksums.txt.pem \
+  --certificate-identity-regexp 'https://github\.com/suzuki-shunsuke/go-release-workflow/\.github/workflows/release\.yaml@.*' \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+  ghcp_1.16.0_checksums.txt
+```
+
+Output:
+
+```
+Verified OK
+```
+
+After verifying the checksum, verify the artifact.
+
+```sh
+cat ghcp_1.16.0_checksums.txt | sha256sum -c --ignore-missing
+```
+
+### 2. slsa-verifier
+
+You can install slsa-verifier by aqua.
+
+```sh
+aqua g -i slsa-framework/slsa-verifier
+```
+
+```sh
+gh release download -R suzuki-shunsuke/ghcp v1.16.0
+slsa-verifier verify-artifact ghcp_darwin_arm64.tar.gz \
+  --provenance-path multiple.intoto.jsonl \
+  --source-uri github.com/suzuki-shunsuke/ghcp \
+  --source-tag v1.16.0
+```
+
+Output:
+
+```
+Verified signature against tlog entry index 136760156 at URL: https://rekor.sigstore.dev/api/v1/log/entries/108e9186e8c5677ab599c49affe2fcc76dca54241195ee179d47be778db6692816eadd29d9552dfb
+Verified build using builder "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v2.0.0" at commit 9d47cba9274dd0f8ea849f0ab18b4e9ec11adbd2
+Verifying artifact ghcp_darwin_arm64.tar.gz: PASSED
+
+PASSED: SLSA verification passed
+```
+
+### 3. GitHub CLI
+
+You can install GitHub CLI by aqua.
+
+```sh
+aqua g -i cli/cli
+```
+
+```sh
+gh release download -R suzuki-shunsuke/ghcp v1.16.0 -p ghcp_darwin_arm64.tar.gz
+gh attestation verify ghcp_darwin_arm64.tar.gz \
+  -R suzuki-shunsuke/ghcp \
+  --signer-workflow suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml
+```
+
+Output:
+
+```
+Loaded digest sha256:56b0ed7135feb44a2a7ec6a8960ca1e4c15d64b45a4ecdb307fc91a4ebbf33ac for file://ghcp_darwin_arm64.tar.gz
+Loaded 1 attestation from GitHub API
+✓ Verification succeeded!
+
+sha256:56b0ed7135feb44a2a7ec6a8960ca1e4c15d64b45a4ecdb307fc91a4ebbf33ac was attested by:
+REPO                                 PREDICATE_TYPE                  WORKFLOW
+suzuki-shunsuke/go-release-workflow  https://slsa.dev/provenance/v1  .github/workflows/release.yaml@7f97a226912ee2978126019b1e95311d7d15c97a
+```
+
+</details>
+
 ## GitHub Access Token
 
 You need to set a GitHub Access token to the environment variable `GITHUB_TOKEN`.
