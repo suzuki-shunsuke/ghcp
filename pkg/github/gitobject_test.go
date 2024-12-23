@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v67/github"
+	"github.com/google/go-github/v68/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client/mock_client"
 	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
@@ -22,12 +22,12 @@ func TestGitHub_CreateCommit(t *testing.T) {
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
 			CreateCommit(ctx, "owner", "repo", &github.Commit{
-				Message: github.String("message"),
-				Parents: []*github.Commit{{SHA: github.String("parentCommitSHA")}},
-				Tree:    &github.Tree{SHA: github.String("treeSHA")},
+				Message: github.Ptr("message"),
+				Parents: []*github.Commit{{SHA: github.Ptr("parentCommitSHA")}},
+				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
 			}, nil).
 			Return(&github.Commit{
-				SHA: github.String("commitSHA"),
+				SHA: github.Ptr("commitSHA"),
 			}, nil, nil)
 		gitHub := GitHub{
 			Client: gitHubClient,
@@ -54,11 +54,11 @@ func TestGitHub_CreateCommit(t *testing.T) {
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
 			CreateCommit(ctx, "owner", "repo", &github.Commit{
-				Message: github.String("message"),
-				Tree:    &github.Tree{SHA: github.String("treeSHA")},
+				Message: github.Ptr("message"),
+				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
 			}, nil).
 			Return(&github.Commit{
-				SHA: github.String("commitSHA"),
+				SHA: github.Ptr("commitSHA"),
 			}, nil, nil)
 		gitHub := GitHub{
 			Client: gitHubClient,
