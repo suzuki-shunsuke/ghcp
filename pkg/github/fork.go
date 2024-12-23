@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v5"
 	"github.com/google/go-github/v68/github"
 	"github.com/shurcooL/githubv4"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
