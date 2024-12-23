@@ -27,7 +27,7 @@ func TestGitHub_GetReleaseByTagOrNil(t *testing.T) {
 		gitHubClient.EXPECT().
 			GetReleaseByTag(ctx, "owner", "repo", "v1.0.0").
 			Return(&github.RepositoryRelease{
-				ID:      github.Ptr(1234567890),
+				ID:      github.Ptr(int64(1234567890)),
 				Name:    github.Ptr("ReleaseName"),
 				TagName: github.Ptr("v1.0.0"),
 			}, &resp, nil)
