@@ -31,7 +31,7 @@ func (c *GitHub) CreateFork(ctx context.Context, id git.RepositoryID) (*git.Repo
 }
 
 func (c *GitHub) waitUntilGitDataIsAvailable(ctx context.Context, id git.RepositoryID) error {
-	operation := func() error {
+	operation := func() (string, error) {
 		var q struct {
 			Repository struct {
 				DefaultBranchRef struct {
@@ -49,12 +49,12 @@ func (c *GitHub) waitUntilGitDataIsAvailable(ctx context.Context, id git.Reposit
 		}
 		c.Logger.Debugf("Querying the repository with %+v", v)
 		if err := c.Client.Query(ctx, &q, v); err != nil {
-			return fmt.Errorf("GitHub API error: %w", err)
+			return "", fmt.Errorf("GitHub API error: %w", err)
 		}
 		c.Logger.Debugf("Got the result: %+v", q)
-		return nil
+		return "", nil
 	}
-	if err := backoff.Retry(operation, backoff.NewExponentialBackOff()); err != nil {
+	if _, err := backoff.Retry(ctx, operation, backoff.WithBackOff(backoff.NewExponentialBackOff())); err != nil {
 		return fmt.Errorf("retry over: %w", err)
 	}
 	return nil
