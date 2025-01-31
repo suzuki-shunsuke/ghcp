@@ -33,19 +33,19 @@ func TestFileSystem_FindFiles(t *testing.T) {
 	if err := os.Chdir(tempDir); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Mkdir("dir1", 0755); err != nil {
+	if err := os.Mkdir("dir1", 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile("dir1/a.jpg", []byte{}, 0644); err != nil {
+	if err := os.WriteFile("dir1/a.jpg", []byte{}, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Mkdir("dir2", 0755); err != nil {
+	if err := os.Mkdir("dir2", 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile("dir2/b.jpg", []byte{}, 0644); err != nil {
+	if err := os.WriteFile("dir2/b.jpg", []byte{}, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile("dir2/c.jpg", []byte{}, 0755); err != nil {
+	if err := os.WriteFile("dir2/c.jpg", []byte{}, 0o755); err != nil {
 		t.Fatal(err)
 	}
 

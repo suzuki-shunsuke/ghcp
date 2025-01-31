@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/google/wire"
+	"github.com/shurcooL/githubv4"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client"
 	"github.com/suzuki-shunsuke/ghcp/pkg/logger"
-	"github.com/shurcooL/githubv4"
 )
 
 var Set = wire.NewSet(
@@ -46,5 +46,7 @@ type GitHub struct {
 	Logger logger.Interface
 }
 
-type InternalRepositoryNodeID githubv4.ID
-type InternalBranchNodeID githubv4.ID
+type (
+	InternalRepositoryNodeID githubv4.ID
+	InternalBranchNodeID     githubv4.ID
+)
