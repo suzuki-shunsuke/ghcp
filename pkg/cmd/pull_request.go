@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/suzuki-shunsuke/ghcp/pkg/git"
-	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/pullrequest"
 )
 
 const pullRequestCmdExample = ` To create a pull request from the feature branch to the default branch:

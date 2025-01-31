@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/suzuki-shunsuke/ghcp/pkg/git"
-	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/release"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
+	"github.com/suzuki-shunsuke/ghcp/pkg/usecases/release"
 )
 
 const releaseCmdExample = `  To upload files to the release associated to tag TAG:

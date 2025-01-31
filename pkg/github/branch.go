@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/shurcooL/githubv4"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 type QueryForCommitInput struct {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/spf13/pflag"
+	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
 type repositoryOptions struct {
