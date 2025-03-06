@@ -2,7 +2,7 @@
 name: Create Status Check
 on:
   workflow_run:
-    workflows: [test] # pull_request workflow name
+    workflows: [go] # pull_request workflow name
     types:
       - completed
 jobs:
