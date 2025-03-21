@@ -1,6 +1,9 @@
 name: go
 on: pull_request
 permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   test:
     uses: suzuki-shunsuke/go-test-full-workflow/.github/workflows/test.yaml@ebc738e18933219d457229048b81ee0d1bed6bdf # v3.0.0
@@ -10,3 +13,12 @@ jobs:
     permissions:
       pull-requests: write
       contents: read
+  status-check:
+    runs-on: ubuntu-24.04
+    if: failure()
+    timeout-minutes: 10
+    permissions: {}
+    needs:
+      - test
+    steps:
+      - run: exit 1
