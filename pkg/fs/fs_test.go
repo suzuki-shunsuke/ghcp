@@ -149,7 +149,7 @@ func makeTempFile(t *testing.T, content string) string {
 	if err != nil {
 		t.Fatalf("error while creating a temp file: %s", err)
 	}
-	defer tempFile.Close()
+	defer tempFile.Close() //nolint:errcheck
 	if _, err := fmt.Fprint(tempFile, content); err != nil {
 		t.Fatalf("error while writing content: %s", err)
 	}
