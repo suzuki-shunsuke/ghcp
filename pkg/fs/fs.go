@@ -105,7 +105,7 @@ func (fs *FileSystem) ReadAsBase64EncodedContent(filename string) (string, error
 	if err != nil {
 		return "", fmt.Errorf("error while opening file %s: %w", filename, err)
 	}
-	defer r.Close()
+	defer r.Close() //nolint:errcheck
 	var s strings.Builder
 	e := base64.NewEncoder(base64.StdEncoding, &s)
 	if _, err := io.Copy(e, r); err != nil {
