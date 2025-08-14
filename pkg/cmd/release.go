@@ -18,7 +18,7 @@ const releaseCmdExample = `  To upload files to the release associated to tag TA
   If the tag does not exist, it will create a tag from the default branch and create a release.
 
   To create a tag and release on commit COMMIT_SHA and upload files to the release:
-    ghcp release -r OWNER/REPO -t TAG --tagret COMMIT_SHA FILES...
+    ghcp release -r OWNER/REPO -t TAG --target COMMIT_SHA FILES...
 
   If the tag already exists, it ignores the target commit.
   If the release already exist, it only uploads the files.
