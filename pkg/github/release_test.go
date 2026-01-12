@@ -8,7 +8,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v81/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client/mock_client"
 	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
