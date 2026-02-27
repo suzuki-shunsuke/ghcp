@@ -10,7 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	github "github.com/google/go-github/v74/github"
+	github "github.com/google/go-github/v83/github"
 	githubv4 "github.com/shurcooL/githubv4"
 )
 
