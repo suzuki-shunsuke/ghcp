@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v74/github"
+	"github.com/google/go-github/v85/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client/mock_client"
 	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
@@ -21,7 +21,7 @@ func TestGitHub_CreateCommit(t *testing.T) {
 
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
-			CreateCommit(ctx, "owner", "repo", &github.Commit{
+			CreateCommit(ctx, "owner", "repo", github.Commit{
 				Message: github.Ptr("message"),
 				Parents: []*github.Commit{{SHA: github.Ptr("parentCommitSHA")}},
 				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
@@ -53,7 +53,7 @@ func TestGitHub_CreateCommit(t *testing.T) {
 
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
-			CreateCommit(ctx, "owner", "repo", &github.Commit{
+			CreateCommit(ctx, "owner", "repo", github.Commit{
 				Message: github.Ptr("message"),
 				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
 			}, nil).

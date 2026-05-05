@@ -10,7 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	github "github.com/google/go-github/v74/github"
+	github "github.com/google/go-github/v85/github"
 	githubv4 "github.com/shurcooL/githubv4"
 )
 
@@ -38,7 +38,7 @@ func (m *MockInterface) EXPECT() *MockInterfaceMockRecorder {
 }
 
 // CreateBlob mocks base method.
-func (m *MockInterface) CreateBlob(arg0 context.Context, arg1, arg2 string, arg3 *github.Blob) (*github.Blob, *github.Response, error) {
+func (m *MockInterface) CreateBlob(arg0 context.Context, arg1, arg2 string, arg3 github.Blob) (*github.Blob, *github.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateBlob", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*github.Blob)
@@ -54,7 +54,7 @@ func (mr *MockInterfaceMockRecorder) CreateBlob(arg0, arg1, arg2, arg3 interface
 }
 
 // CreateCommit mocks base method.
-func (m *MockInterface) CreateCommit(arg0 context.Context, arg1, arg2 string, arg3 *github.Commit, arg4 *github.CreateCommitOptions) (*github.Commit, *github.Response, error) {
+func (m *MockInterface) CreateCommit(arg0 context.Context, arg1, arg2 string, arg3 github.Commit, arg4 *github.CreateCommitOptions) (*github.Commit, *github.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateCommit", arg0, arg1, arg2, arg3, arg4)
 	ret0, _ := ret[0].(*github.Commit)
