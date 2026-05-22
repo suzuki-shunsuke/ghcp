@@ -81,12 +81,19 @@ func newClients(o Option) (*githubv4.Client, *github.Client, error) {
 	}
 	if o.URLv3 != "" {
 		// https://developer.github.com/enterprise/2.16/v3/
-		v3, err := github.NewClient(hc).WithEnterpriseURLs(o.URLv3, o.URLv3)
+		v3, err := github.NewClient(
+			github.WithHTTPClient(hc),
+			github.WithEnterpriseURLs(o.URLv3, o.URLv3),
+		)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error while creating a GitHub v3 client: %w", err)
 		}
 		// https://developer.github.com/enterprise/2.16/v4/guides/forming-calls/
-		v4URL, err := buildV4URL(v3.BaseURL)
+		v3BaseURL, err := url.Parse(v3.BaseURL())
+		if err != nil {
+			return nil, nil, fmt.Errorf("error while parsing a GitHub v3 base URL: %w", err)
+		}
+		v4URL, err := buildV4URL(v3BaseURL)
 		if err != nil {
 			return nil, nil, fmt.Errorf("error while creating a GitHub v4 client: %w", err)
 		}
@@ -94,7 +101,10 @@ func newClients(o Option) (*githubv4.Client, *github.Client, error) {
 		return v4, v3, nil
 	}
 	v4 := githubv4.NewClient(hc)
-	v3 := github.NewClient(hc)
+	v3, err := github.NewClient(github.WithHTTPClient(hc))
+	if err != nil {
+		return nil, nil, fmt.Errorf("error while creating a GitHub v3 client: %w", err)
+	}
 	return v4, v3, nil
 }
 
