@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cenkalti/backoff/v5"
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"github.com/shurcooL/githubv4"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
