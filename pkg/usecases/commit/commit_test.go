@@ -2,6 +2,7 @@ package commit
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"testing"
 
@@ -470,6 +471,96 @@ func TestCommitToBranch_Do_parentRefNotFound(t *testing.T) {
 				t.Errorf("err wants to contain the parent ref name but %+v", err)
 			}
 		})
+	}
+}
+
+func TestCommitToBranch_Do_branchAppearsWhileCreating(t *testing.T) {
+	ctx := context.TODO()
+	in := Input{
+		TargetRepository: targetRepositoryID,
+		TargetBranchName: "topic",
+		ParentRepository: parentRepositoryID,
+		CommitStrategy:   commitstrategy.FastForward,
+		CommitMessage:    "message",
+		Paths:            []string{"path"},
+	}
+	queryInput := github.QueryForCommitInput{
+		ParentRepository: parentRepositoryID,
+		TargetRepository: targetRepositoryID,
+		TargetBranchName: "topic",
+	}
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	gitHub := mock_github.NewMockInterface(ctrl)
+	gomock.InOrder(
+		// The query does not see the branch yet.
+		gitHub.EXPECT().
+			QueryForCommit(ctx, queryInput).
+			Return(&github.QueryForCommitOutput{
+				CurrentUserName:              "current",
+				ParentDefaultBranchCommitSHA: "masterCommitSHA",
+				ParentDefaultBranchTreeSHA:   "masterTreeSHA",
+				TargetRepositoryNodeID:       targetRepositoryNodeID,
+			}, nil),
+		// But it is there, so creating it is rejected.
+		gitHub.EXPECT().
+			CreateBranch(ctx, github.CreateBranchInput{
+				RepositoryNodeID: targetRepositoryNodeID,
+				BranchName:       "topic",
+				CommitSHA:        "commitSHA",
+			}).
+			Return(errors.New(`GitHub API error: A ref named "refs/heads/topic" already exists in the repository.`)),
+		// The second query sees it.
+		gitHub.EXPECT().
+			QueryForCommit(ctx, queryInput).
+			Return(&github.QueryForCommitOutput{
+				CurrentUserName:              "current",
+				ParentDefaultBranchCommitSHA: "masterCommitSHA",
+				ParentDefaultBranchTreeSHA:   "masterTreeSHA",
+				TargetBranchNodeID:           targetBranchNodeID,
+				TargetBranchCommitSHA:        "topicCommitSHA",
+				TargetBranchTreeSHA:          "topicTreeSHA",
+			}, nil),
+		gitHub.EXPECT().
+			UpdateBranch(ctx, github.UpdateBranchInput{
+				BranchRefNodeID: targetBranchNodeID,
+				CommitSHA:       "commitSHA",
+			}).
+			Return(nil),
+	)
+
+	createGitObject := mock_gitobject.NewMockInterface(ctrl)
+	for _, parent := range []struct {
+		commitSHA git.CommitSHA
+		treeSHA   git.TreeSHA
+	}{
+		{"masterCommitSHA", "masterTreeSHA"},
+		{"topicCommitSHA", "topicTreeSHA"},
+	} {
+		createGitObject.EXPECT().
+			Do(ctx, gitobject.Input{
+				Files:           theFiles,
+				Repository:      targetRepositoryID,
+				CommitMessage:   "message",
+				ParentCommitSHA: parent.commitSHA,
+				ParentTreeSHA:   parent.treeSHA,
+			}).
+			Return(&gitobject.Output{
+				CommitSHA:    "commitSHA",
+				ChangedFiles: 1,
+			}, nil)
+	}
+
+	useCase := Commit{
+		CreateGitObject: createGitObject,
+		FileSystem:      newFileSystemMock(ctrl),
+		Logger:          testingLogger.New(t),
+		GitHub:          gitHub,
+	}
+	if err := useCase.Do(ctx, in); err != nil {
+		t.Errorf("err wants nil but %+v", err)
 	}
 }
 

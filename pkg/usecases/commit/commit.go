@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/google/wire"
 
@@ -111,7 +112,42 @@ func (u *Commit) Do(ctx context.Context, in Input) error {
 		return nil
 	}
 	if err := u.createNewBranch(ctx, in, files, q); err != nil {
-		return fmt.Errorf("could not create a branch (%s) based on the default branch: %w", in.TargetBranchName, err)
+		if !isRefAlreadyExists(err) {
+			return fmt.Errorf("could not create a branch (%s) based on the default branch: %w", in.TargetBranchName, err)
+		}
+		// QueryForCommit reported the branch as missing, but creating it was
+		// rejected because it does exist. The query is eventually consistent, so
+		// a branch created moments ago is not always visible yet. Look it up
+		// again and update it instead.
+		u.Logger.Infof("The branch (%s) already exists, updating it instead", in.TargetBranchName)
+		if err := u.updateBranchAfterCreateConflict(ctx, in, files); err != nil {
+			return fmt.Errorf("could not create a branch (%s) based on the default branch: %w", in.TargetBranchName, err)
+		}
+	}
+	return nil
+}
+
+// isRefAlreadyExists reports whether the error is GitHub rejecting createRef
+// because the ref is already there.
+func isRefAlreadyExists(err error) bool {
+	return strings.Contains(err.Error(), "already exists")
+}
+
+func (u *Commit) updateBranchAfterCreateConflict(ctx context.Context, in Input, files []fs.File) error {
+	q, err := u.GitHub.QueryForCommit(ctx, github.QueryForCommitInput{
+		ParentRepository: in.ParentRepository,
+		ParentRef:        in.CommitStrategy.RebaseUpstream(), // valid only if rebase
+		TargetRepository: in.TargetRepository,
+		TargetBranchName: in.TargetBranchName,
+	})
+	if err != nil {
+		return fmt.Errorf("could not find the repository: %w", err)
+	}
+	if !q.TargetBranchExists() {
+		return errors.New("the branch was reported as already existing but it cannot be found")
+	}
+	if err := u.updateExistingBranch(ctx, in, files, q); err != nil {
+		return fmt.Errorf("could not update the existing branch: %w", err)
 	}
 	return nil
 }
