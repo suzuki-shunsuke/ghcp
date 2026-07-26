@@ -2,6 +2,7 @@ package commit
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -407,6 +408,67 @@ func TestCommitToBranch_Do(t *testing.T) {
 	} {
 		t.Run(name, func(t *testing.T) {
 			run(t, c)
+		})
+	}
+}
+
+func TestCommitToBranch_Do_parentRefNotFound(t *testing.T) {
+	ctx := context.TODO()
+	in := Input{
+		TargetRepository: targetRepositoryID,
+		TargetBranchName: "topic",
+		ParentRepository: parentRepositoryID,
+		CommitStrategy:   commitstrategy.RebaseOn("develop"),
+		CommitMessage:    "message",
+		Paths:            []string{"path"},
+	}
+	queryInput := github.QueryForCommitInput{
+		ParentRepository: parentRepositoryID,
+		ParentRef:        "develop",
+		TargetRepository: targetRepositoryID,
+		TargetBranchName: "topic",
+	}
+
+	// The query returns an empty parent ref if the ref does not exist,
+	// or if it is not visible yet due to the eventual consistency of the API.
+	// ghcp must not create a commit which has no parent in this case.
+	for name, q := range map[string]*github.QueryForCommitOutput{
+		"when the branch does not exist, it should not create it": {
+			CurrentUserName:              "current",
+			ParentDefaultBranchCommitSHA: "masterCommitSHA",
+			ParentDefaultBranchTreeSHA:   "masterTreeSHA",
+			TargetRepositoryNodeID:       targetRepositoryNodeID,
+		},
+		"when the branch exists, it should not update it": {
+			CurrentUserName:              "current",
+			ParentDefaultBranchCommitSHA: "masterCommitSHA",
+			ParentDefaultBranchTreeSHA:   "masterTreeSHA",
+			TargetBranchNodeID:           targetBranchNodeID,
+			TargetBranchCommitSHA:        "topicCommitSHA",
+			TargetBranchTreeSHA:          "topicTreeSHA",
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			ctrl := gomock.NewController(t)
+			defer ctrl.Finish()
+			gitHub := mock_github.NewMockInterface(ctrl)
+			gitHub.EXPECT().
+				QueryForCommit(ctx, queryInput).
+				Return(q, nil)
+
+			useCase := Commit{
+				CreateGitObject: mock_gitobject.NewMockInterface(ctrl),
+				FileSystem:      newFileSystemMock(ctrl),
+				Logger:          testingLogger.New(t),
+				GitHub:          gitHub,
+			}
+			err := useCase.Do(ctx, in)
+			if err == nil {
+				t.Fatal("err wants non-nil but nil")
+			}
+			if !strings.Contains(err.Error(), "develop") {
+				t.Errorf("err wants to contain the parent ref name but %+v", err)
+			}
 		})
 	}
 }
