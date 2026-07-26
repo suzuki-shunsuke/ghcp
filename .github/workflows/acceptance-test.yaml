@@ -43,3 +43,5 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - run: make -C acceptance_test clean-up
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
