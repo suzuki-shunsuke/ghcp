@@ -1,5 +1,7 @@
 GHCP := ../ghcp
-GHCP_FLAGS := --debug -u suzuki-shunsuke -r ghcp
+OWNER := suzuki-shunsuke
+REPO := ghcp
+GHCP_FLAGS := --debug -u $(OWNER) -r $(REPO)
 
 GITHUB_RUN_NUMBER ?= 0
 BRANCH_PREFIX := ghcp-acceptance-test-$(GITHUB_RUN_NUMBER)
@@ -20,7 +22,12 @@ test:
 		--title "ghcp: acceptance-test $(BRANCH_PREFIX)" \
 		--body "ref: #$(GITHUB_PR_NUMBER)"
 
+# The workflow checks out with persist-credentials: false, so git has no
+# credentials to push with. Use the API with GITHUB_TOKEN instead.
+# Closing the pull request deletes the feature branch; the master branch is not
+# a pull request head, so it has to be deleted on its own.
 .PHONY: clean-up
 clean-up:
-	-git push origin --delete $(BRANCH_PREFIX)-master
-	-git push origin --delete $(BRANCH_PREFIX)-feature
+	-gh pr close $(BRANCH_PREFIX)-feature --repo $(OWNER)/$(REPO) --delete-branch
+	-gh api -X DELETE repos/$(OWNER)/$(REPO)/git/refs/heads/$(BRANCH_PREFIX)-master
+	-gh api -X DELETE repos/$(OWNER)/$(REPO)/git/refs/heads/$(BRANCH_PREFIX)-feature
