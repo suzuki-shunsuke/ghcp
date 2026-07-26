@@ -8,7 +8,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 	"github.com/suzuki-shunsuke/ghcp/pkg/github/client/mock_client"
 	testingLogger "github.com/suzuki-shunsuke/ghcp/pkg/logger/testing"
@@ -27,9 +27,9 @@ func TestGitHub_GetReleaseByTagOrNil(t *testing.T) {
 		gitHubClient.EXPECT().
 			GetReleaseByTag(ctx, "owner", "repo", "v1.0.0").
 			Return(&github.RepositoryRelease{
-				ID:      github.Ptr(int64(1234567890)),
+				ID:      1234567890,
 				Name:    github.Ptr("ReleaseName"),
-				TagName: github.Ptr("v1.0.0"),
+				TagName: "v1.0.0",
 			}, &resp, nil)
 		gitHub := GitHub{
 			Client: gitHubClient,

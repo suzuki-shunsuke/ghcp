@@ -10,7 +10,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	github "github.com/google/go-github/v88/github"
+	github "github.com/google/go-github/v89/github"
 	githubv4 "github.com/shurcooL/githubv4"
 )
 
@@ -86,7 +86,7 @@ func (mr *MockInterfaceMockRecorder) CreateFork(arg0, arg1, arg2, arg3 interface
 }
 
 // CreateRelease mocks base method.
-func (m *MockInterface) CreateRelease(arg0 context.Context, arg1, arg2 string, arg3 *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error) {
+func (m *MockInterface) CreateRelease(arg0 context.Context, arg1, arg2 string, arg3 github.CreateReleaseRequest) (*github.RepositoryRelease, *github.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateRelease", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*github.RepositoryRelease)

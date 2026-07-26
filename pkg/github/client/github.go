@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"os"
 
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"github.com/google/wire"
 	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
@@ -41,7 +41,7 @@ type GitService interface {
 type RepositoriesService interface {
 	CreateFork(ctx context.Context, owner, repo string, opt *github.RepositoryCreateForkOptions) (*github.Repository, *github.Response, error)
 	GetReleaseByTag(ctx context.Context, owner, repo, tag string) (*github.RepositoryRelease, *github.Response, error)
-	CreateRelease(ctx context.Context, owner, repo string, release *github.RepositoryRelease) (*github.RepositoryRelease, *github.Response, error)
+	CreateRelease(ctx context.Context, owner, repo string, body github.CreateReleaseRequest) (*github.RepositoryRelease, *github.Response, error)
 	UploadReleaseAsset(ctx context.Context, owner, repo string, id int64, opt *github.UploadOptions, file *os.File) (*github.ReleaseAsset, *github.Response, error)
 }
 

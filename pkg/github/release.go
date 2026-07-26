@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/google/go-github/v88/github"
+	"github.com/google/go-github/v89/github"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
 
@@ -35,9 +35,9 @@ func (c *GitHub) GetReleaseByTagOrNil(ctx context.Context, repo git.RepositoryID
 // CreateRelease creates a release.
 func (c *GitHub) CreateRelease(ctx context.Context, r git.Release) (*git.Release, error) {
 	c.Logger.Debugf("Creating a release %+v", r)
-	release, _, err := c.Client.CreateRelease(ctx, r.ID.Repository.Owner, r.ID.Repository.Name, &github.RepositoryRelease{
+	release, _, err := c.Client.CreateRelease(ctx, r.ID.Repository.Owner, r.ID.Repository.Name, github.CreateReleaseRequest{
 		Name:            github.Ptr(r.Name),
-		TagName:         github.Ptr(r.TagName.Name()),
+		TagName:         r.TagName.Name(),
 		TargetCommitish: github.Ptr(r.TargetCommitish),
 	})
 	if err != nil {
