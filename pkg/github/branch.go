@@ -3,7 +3,9 @@ package github
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/cenkalti/backoff/v7"
 	"github.com/shurcooL/githubv4"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
@@ -31,8 +33,48 @@ func (q *QueryForCommitOutput) TargetBranchExists() bool {
 	return q.TargetBranchCommitSHA != ""
 }
 
+// parentRefMaxElapsedTime is the maximum time to wait for the parent ref to become available.
+const parentRefMaxElapsedTime = 30 * time.Second
+
 // QueryForCommit returns the repository for creating or updating the branch.
+// If the parent ref is given, it must exist.
+// The GraphQL API is eventually consistent and a ref created moments ago is not
+// always visible yet, so this waits for the ref if it is not found.
 func (c *GitHub) QueryForCommit(ctx context.Context, in QueryForCommitInput) (*QueryForCommitOutput, error) {
+	out, err := c.queryForCommit(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	if in.ParentRef == "" || out.ParentRefCommitSHA != "" {
+		return out, nil
+	}
+	return c.waitUntilParentRefIsAvailable(ctx, in)
+}
+
+// waitUntilParentRefIsAvailable queries the repository until the parent ref is available.
+// Without this, ghcp would create a commit which has no parent silently.
+func (c *GitHub) waitUntilParentRefIsAvailable(ctx context.Context, in QueryForCommitInput) (*QueryForCommitOutput, error) {
+	c.Logger.Debugf("The parent ref (%s) is not found. Waiting for the ref", in.ParentRef)
+	operation := func() (*QueryForCommitOutput, error) {
+		out, err := c.queryForCommit(ctx, in)
+		if err != nil {
+			return nil, backoff.Permanent(err)
+		}
+		if out.ParentRefCommitSHA == "" {
+			return nil, fmt.Errorf("the parent ref (%s) is not found in the repository (%s)", in.ParentRef, in.ParentRepository)
+		}
+		return out, nil
+	}
+	out, err := backoff.Retry(ctx, operation,
+		backoff.WithBackOff(backoff.NewExponentialBackOff()),
+		backoff.WithMaxElapsedTime(parentRefMaxElapsedTime))
+	if err != nil {
+		return nil, fmt.Errorf("retry over: %w", err)
+	}
+	return out, nil
+}
+
+func (c *GitHub) queryForCommit(ctx context.Context, in QueryForCommitInput) (*QueryForCommitOutput, error) {
 	var q struct {
 		Viewer struct {
 			Login string
