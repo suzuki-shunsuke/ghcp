@@ -169,6 +169,17 @@ func (f *pathFilter) ExcludeFile(string) bool {
 	return false
 }
 
+// validateParentRef returns an error if the parent ref was not found.
+// The user explicitly gave the ref, so an empty SHA is never a valid result.
+// Committing with an empty SHA would silently create a commit which has no
+// parent, so the branch would share no history with the given ref.
+func validateParentRef(in Input, q *github.QueryForCommitOutput) error {
+	if q.ParentRefCommitSHA != "" {
+		return nil
+	}
+	return fmt.Errorf("the parent ref (%s) is not found in the repository (%s), it may not exist or may not be visible yet", in.CommitStrategy.RebaseUpstream(), in.ParentRepository)
+}
+
 func (u *Commit) createNewBranch(ctx context.Context, in Input, files []fs.File, q *github.QueryForCommitOutput) error {
 	gitObj := gitobject.Input{
 		Files:         files,
@@ -186,6 +197,9 @@ func (u *Commit) createNewBranch(ctx context.Context, in Input, files []fs.File,
 		gitObj.ParentTreeSHA = q.ParentDefaultBranchTreeSHA
 	case in.CommitStrategy.IsRebase():
 		u.Logger.Infof("Creating a branch (%s) based on the ref (%s)", in.TargetBranchName, in.CommitStrategy.RebaseUpstream())
+		if err := validateParentRef(in, q); err != nil {
+			return err
+		}
 		gitObj.ParentCommitSHA = q.ParentRefCommitSHA
 		gitObj.ParentTreeSHA = q.ParentRefTreeSHA
 	case in.CommitStrategy.NoParent():
@@ -239,6 +253,9 @@ func (u *Commit) updateExistingBranch(ctx context.Context, in Input, files []fs.
 		gitObj.ParentTreeSHA = q.TargetBranchTreeSHA
 	case in.CommitStrategy.IsRebase():
 		u.Logger.Infof("Rebasing the branch (%s) on the ref (%s)", in.TargetBranchName, in.CommitStrategy.RebaseUpstream())
+		if err := validateParentRef(in, q); err != nil {
+			return err
+		}
 		gitObj.ParentCommitSHA = q.ParentRefCommitSHA
 		gitObj.ParentTreeSHA = q.ParentRefTreeSHA
 	case in.CommitStrategy.NoParent():
