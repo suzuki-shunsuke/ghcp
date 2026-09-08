@@ -1,6 +1,6 @@
 module github.com/suzuki-shunsuke/ghcp
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/cenkalti/backoff/v7 v7.0.0
@@ -11,7 +11,7 @@ require (
 	github.com/shurcooL/githubv4 v0.0.0-20240429030203-be2daab69064
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/pflag v1.0.10
-	golang.org/x/oauth2 v0.36.0
+	golang.org/x/oauth2 v0.37.0
 )
 
 require (
