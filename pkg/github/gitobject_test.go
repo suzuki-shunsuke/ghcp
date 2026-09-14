@@ -22,12 +22,12 @@ func TestGitHub_CreateCommit(t *testing.T) {
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
 			CreateCommit(ctx, "owner", "repo", github.Commit{
-				Message: github.Ptr("message"),
-				Parents: []*github.Commit{{SHA: github.Ptr("parentCommitSHA")}},
-				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
+				Message: new("message"),
+				Parents: []*github.Commit{{SHA: new("parentCommitSHA")}},
+				Tree:    &github.Tree{SHA: new("treeSHA")},
 			}, nil).
 			Return(&github.Commit{
-				SHA: github.Ptr("commitSHA"),
+				SHA: new("commitSHA"),
 			}, nil, nil)
 		gitHub := GitHub{
 			Client: gitHubClient,
@@ -54,11 +54,11 @@ func TestGitHub_CreateCommit(t *testing.T) {
 		gitHubClient := mock_client.NewMockInterface(ctrl)
 		gitHubClient.EXPECT().
 			CreateCommit(ctx, "owner", "repo", github.Commit{
-				Message: github.Ptr("message"),
-				Tree:    &github.Tree{SHA: github.Ptr("treeSHA")},
+				Message: new("message"),
+				Tree:    &github.Tree{SHA: new("treeSHA")},
 			}, nil).
 			Return(&github.Commit{
-				SHA: github.Ptr("commitSHA"),
+				SHA: new("commitSHA"),
 			}, nil, nil)
 		gitHub := GitHub{
 			Client: gitHubClient,
