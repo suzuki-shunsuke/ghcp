@@ -28,7 +28,7 @@ func TestGitHub_GetReleaseByTagOrNil(t *testing.T) {
 			GetReleaseByTag(ctx, "owner", "repo", "v1.0.0").
 			Return(&github.RepositoryRelease{
 				ID:      1234567890,
-				Name:    github.Ptr("ReleaseName"),
+				Name:    new("ReleaseName"),
 				TagName: "v1.0.0",
 			}, &resp, nil)
 		gitHub := GitHub{
