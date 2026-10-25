@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cenkalti/backoff/v7"
-	"github.com/google/go-github/v92/github"
+	"github.com/google/go-github/v93/github"
 	"github.com/shurcooL/githubv4"
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
 )
@@ -13,7 +13,7 @@ import (
 // CreateFork creates a fork of the repository.
 // This returns ID of the fork.
 func (c *GitHub) CreateFork(ctx context.Context, id git.RepositoryID) (*git.RepositoryID, error) {
-	fork, _, err := c.Client.CreateFork(ctx, id.Owner, id.Name, nil)
+	fork, _, err := c.Client.CreateFork(ctx, id.Owner, id.Name, github.CreateForkRequest{})
 	if err != nil {
 		if _, ok := err.(*github.AcceptedError); !ok {
 			return nil, fmt.Errorf("GitHub API error: %w", err)

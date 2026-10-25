@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/google/go-github/v92/github"
+	"github.com/google/go-github/v93/github"
 	"github.com/shurcooL/githubv4"
 
 	"github.com/suzuki-shunsuke/ghcp/pkg/git"
@@ -105,7 +105,7 @@ func (c *GitHub) CreateBlob(ctx context.Context, n git.NewBlob) (git.BlobSHA, er
 	c.Logger.Debugf("Creating a blob of %d byte(s) on the repository %+v", len(n.Content), n.Repository)
 	blob, _, err := c.Client.CreateBlob(ctx, n.Repository.Owner, n.Repository.Name, github.Blob{
 		Encoding: new("base64"),
-		Content:  new(n.Content),
+		Content:  n.Content,
 	})
 	if err != nil {
 		return "", fmt.Errorf("GitHub API error: %w", err)
