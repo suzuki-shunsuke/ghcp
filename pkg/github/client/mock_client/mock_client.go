@@ -70,7 +70,7 @@ func (mr *MockInterfaceMockRecorder) CreateCommit(arg0, arg1, arg2, arg3, arg4 i
 }
 
 // CreateFork mocks base method.
-func (m *MockInterface) CreateFork(arg0 context.Context, arg1, arg2 string, arg3 *github.RepositoryCreateForkOptions) (*github.Repository, *github.Response, error) {
+func (m *MockInterface) CreateFork(arg0 context.Context, arg1, arg2 string, arg3 github.CreateForkRequest) (*github.Repository, *github.Response, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateFork", arg0, arg1, arg2, arg3)
 	ret0, _ := ret[0].(*github.Repository)
