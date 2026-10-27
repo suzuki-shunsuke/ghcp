@@ -41,69 +41,14 @@ aqua g -i suzuki-shunsuke/ghcp
 <details>
 <summary>Verify downloaded binaries from GitHub Releases</summary>
 
-You can verify downloaded binaries using some tools.
+You can verify downloaded assets using some tools.
 
-1. [Cosign](https://github.com/sigstore/cosign)
-1. [slsa-verifier](https://github.com/slsa-framework/slsa-verifier)
 1. [GitHub CLI](https://cli.github.com/)
+1. [Cosign](https://github.com/sigstore/cosign)
+1. [Packslip](https://packslip.dev/) `ghcp >= v1.16.1`
+1. [slsa-verifier](https://github.com/slsa-framework/slsa-verifier) `ghcp <= v1.16.0`
 
-### 1. Cosign
-
-You can install Cosign by aqua.
-
-```sh
-aqua g -i sigstore/cosign
-```
-
-```sh
-gh release download -R suzuki-shunsuke/ghcp v1.16.0
-cosign verify-blob \
-  --signature ghcp_1.16.0_checksums.txt.sig \
-  --certificate ghcp_1.16.0_checksums.txt.pem \
-  --certificate-identity-regexp 'https://github\.com/suzuki-shunsuke/go-release-workflow/\.github/workflows/release\.yaml@.*' \
-  --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
-  ghcp_1.16.0_checksums.txt
-```
-
-Output:
-
-```
-Verified OK
-```
-
-After verifying the checksum, verify the artifact.
-
-```sh
-cat ghcp_1.16.0_checksums.txt | sha256sum -c --ignore-missing
-```
-
-### 2. slsa-verifier
-
-You can install slsa-verifier by aqua.
-
-```sh
-aqua g -i slsa-framework/slsa-verifier
-```
-
-```sh
-gh release download -R suzuki-shunsuke/ghcp v1.16.0
-slsa-verifier verify-artifact ghcp_darwin_arm64.tar.gz \
-  --provenance-path multiple.intoto.jsonl \
-  --source-uri github.com/suzuki-shunsuke/ghcp \
-  --source-tag v1.16.0
-```
-
-Output:
-
-```
-Verified signature against tlog entry index 136760156 at URL: https://rekor.sigstore.dev/api/v1/log/entries/108e9186e8c5677ab599c49affe2fcc76dca54241195ee179d47be778db6692816eadd29d9552dfb
-Verified build using builder "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v2.0.0" at commit 9d47cba9274dd0f8ea849f0ab18b4e9ec11adbd2
-Verifying artifact ghcp_darwin_arm64.tar.gz: PASSED
-
-PASSED: SLSA verification passed
-```
-
-### 3. GitHub CLI
+### 1. GitHub CLI
 
 You can install GitHub CLI by aqua.
 
@@ -112,22 +57,108 @@ aqua g -i cli/cli
 ```
 
 ```sh
-gh release download -R suzuki-shunsuke/ghcp v1.16.0 -p ghcp_darwin_arm64.tar.gz
-gh attestation verify ghcp_darwin_arm64.tar.gz \
+version=v1.16.1
+asset=ghcp_darwin_arm64.tar.gz
+gh release download -R suzuki-shunsuke/ghcp "$version" -p "$asset"
+gh attestation verify "$asset" \
   -R suzuki-shunsuke/ghcp \
   --signer-workflow suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml
 ```
 
-Output:
+### 2. Cosign
 
+You can install Cosign by aqua.
+
+```sh
+aqua g -i sigstore/cosign
 ```
-Loaded digest sha256:56b0ed7135feb44a2a7ec6a8960ca1e4c15d64b45a4ecdb307fc91a4ebbf33ac for file://ghcp_darwin_arm64.tar.gz
-Loaded 1 attestation from GitHub API
-✓ Verification succeeded!
 
-sha256:56b0ed7135feb44a2a7ec6a8960ca1e4c15d64b45a4ecdb307fc91a4ebbf33ac was attested by:
-REPO                                 PREDICATE_TYPE                  WORKFLOW
-suzuki-shunsuke/go-release-workflow  https://slsa.dev/provenance/v1  .github/workflows/release.yaml@7f97a226912ee2978126019b1e95311d7d15c97a
+From ghcp v1.16.1, the bundle file is `ghcp_<version>_checksums.txt.sigstore.json`.
+Cosign v2.4.2 or later is required.
+
+```sh
+version=v1.16.1
+checksum_file="ghcp_${version#v}_checksums.txt"
+asset=ghcp_darwin_arm64.tar.gz
+gh release download "$version" \
+  -R suzuki-shunsuke/ghcp \
+  -p "$asset" \
+  -p "$checksum_file" \
+  -p "${checksum_file}.sigstore.json"
+cosign verify-blob \
+  "$checksum_file" \
+  --bundle "${checksum_file}.sigstore.json" \
+  --certificate-identity-regexp 'https://github\.com/suzuki-shunsuke/go-release-workflow/\.github/workflows/release\.yaml@.*' \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+cat "$checksum_file" | sha256sum -c --ignore-missing -
+```
+
+For ghcp v1.16.0 or older, `*.pem` and `*.sig` are available instead.
+
+```sh
+version=v1.16.0
+checksum_file="ghcp_${version#v}_checksums.txt"
+asset=ghcp_darwin_arm64.tar.gz
+gh release download "$version" \
+  -R suzuki-shunsuke/ghcp \
+  -p "$asset" \
+  -p "$checksum_file" \
+  -p "${checksum_file}.pem" \
+  -p "${checksum_file}.sig"
+cosign verify-blob \
+  --signature "${checksum_file}.sig" \
+  --certificate "${checksum_file}.pem" \
+  --certificate-identity-regexp 'https://github\.com/suzuki-shunsuke/go-release-workflow/\.github/workflows/release\.yaml@.*' \
+  --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+  "$checksum_file"
+cat "$checksum_file" | sha256sum -c --ignore-missing -
+```
+
+### 3. Packslip
+
+`ghcp >= v1.16.1`
+
+You can install packslip by aqua.
+
+```sh
+aqua g -i jdx/packslip
+```
+
+```sh
+version=v1.16.1
+asset=ghcp_darwin_arm64.tar.gz
+gh release download -R suzuki-shunsuke/ghcp "$version" -p "$asset" -p packslip.sigstore.json
+packslip verify packslip.sigstore.json \
+    --pin ps1_gomcuhctuuswqow6lm53g26dxq \
+    --identity-prefix https://github.com/suzuki-shunsuke/go-release-workflow/.github/workflows/release.yaml@ \
+    --artifact "$asset"
+```
+
+- `--pin` requires the release to be signed from the repository `suzuki-shunsuke/ghcp`, identified by its repository ID rather than its name
+- `--identity-prefix` requires the release to be signed by the release workflow of [suzuki-shunsuke/go-release-workflow](https://github.com/suzuki-shunsuke/go-release-workflow)
+
+On success, packslip prints a line starting with `ok:`.
+Please make sure it shows the project and version you meant, e.g. `github.com/suzuki-shunsuke/ghcp 1.16.1`.
+
+### 4. slsa-verifier
+
+> [!WARNING]
+> As of ghcp v1.16.1, `multiple.intoto.jsonl` hasn't been published anymore.
+
+You can install slsa-verifier by aqua.
+
+```sh
+aqua g -i slsa-framework/slsa-verifier
+```
+
+```sh
+version=v1.16.0
+asset=ghcp_darwin_arm64.tar.gz
+gh release download -R suzuki-shunsuke/ghcp "$version" -p "$asset" -p multiple.intoto.jsonl
+slsa-verifier verify-artifact "$asset" \
+  --provenance-path multiple.intoto.jsonl \
+  --source-uri github.com/suzuki-shunsuke/ghcp \
+  --source-tag "$version"
 ```
 
 </details>
