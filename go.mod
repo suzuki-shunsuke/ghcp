@@ -3,7 +3,7 @@ module github.com/suzuki-shunsuke/ghcp
 go 1.27.3
 
 require (
-	github.com/cenkalti/backoff/v7 v7.0.1
+	github.com/cenkalti/backoff/v7 v7.0.2
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/go-github/v93 v93.0.0
