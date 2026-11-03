@@ -16,14 +16,31 @@ on:
       - go.*
       - acceptance_test/**
 
+permissions: {}
+
 jobs:
+  # Download Go modules through Takumi Guard, which requires id-token: write.
+  # The run job runs the code of ghcp and its dependencies with contents: write and pull-requests: write,
+  # so it must not have id-token: write.
+  gomodule:
+    uses: suzuki-shunsuke/download-go-module-action/.github/workflows/download.yaml@e03acd0c9d3d230019ebb7bd4a62507431fe4316 # v0.0.10
+    permissions:
+      contents: read
+      id-token: write
+    secrets:
+      TAKUMI_GUARD_BOT_ID: ${{secrets.TAKUMI_GUARD_BOT_ID}}
+
   run:
     runs-on: ubuntu-26.04
     timeout-minutes: 10
+    needs: gomodule
     permissions:
       contents: write
       pull-requests: write
-      id-token: write
+    env:
+      # Use only the modules downloaded in the gomodule job.
+      # Fail instead of silently downloading modules without Takumi Guard.
+      GOPROXY: "off"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -31,11 +48,9 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
-          cache: true
+          cache: false
 
-      - uses: flatt-security/setup-takumi-guard-golang@2e3c7c40b538cd68b2ac483def12982ebc8bc02e # v1
-        with:
-          bot-id: ${{secrets.TAKUMI_GUARD_BOT_ID}}
+      - uses: suzuki-shunsuke/download-go-module-action/restore@e03acd0c9d3d230019ebb7bd4a62507431fe4316 # v0.0.10
 
       - run: go build -ldflags '-X main.version=${{ github.ref_name }}'
       - run: make -C acceptance_test
