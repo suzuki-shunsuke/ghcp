@@ -1,6 +1,6 @@
 module github.com/suzuki-shunsuke/ghcp
 
-go 1.27.3
+go 1.27.4
 
 require (
 	github.com/cenkalti/backoff/v7 v7.0.3
